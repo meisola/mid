@@ -1,0 +1,181 @@
+
+#include<Wire.h>
+#include<SPI.h>
+#include<Adafruit_GFX.h>
+#include<Adafruit_SSD1306.h>
+//Define Variables
+#define OLED_MOSI 11 //D1
+#define OLED_CLK 12 //D0
+#define OLED_DC 9 //DC
+#define OLED_CS 8//CS
+#define OLED_RESET 10 //RES
+#define fsr_pin A0
+Adafruit_SSD1306 display(OLED_MOSI,OLED_CLK,OLED_DC,OLED_RESET,OLED_CS);
+static const unsigned char PROGMEM Logo[]={
+  B11111111, B11111111, B11111111, B11111111, 
+  B11111111, B11111111, B11111111, B11111111, 
+  B11111110, B00000001, B00000000, B11111111, 
+  B11111100, B00000000, B00000000, B00111111, 
+  B11111000, B01111000, B00000000, B00011111, 
+  B11111000, B11111100, B00000000, B00011111, 
+  B11111000, B01111000, B00000000, B00011111, 
+  B11111000, B00000000, B00000000, B00011111, 
+  B11111000, B00000000, B00000000, B00111111, 
+  B11111100, B00000000, B00000000, B01111111, 
+  B11111110, B00000000, B00000000, B11111111, 
+  B11111111, B10000000, B00000001, B11111111, 
+  B11111111, B11000000, B00000111, B11111111, 
+  B11111111, B11110000, B00011111, B11111111, 
+  B11111111, B11111110, B11111111, B11111111, 
+  B00000000, B00000000, B00000000, B00000000, 
+  
+  
+  };
+  static const unsigned char PROGMEM Sign[]={
+  B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, 
+  B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, 
+  B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, 
+  B11111111, B11111111, B11000000, B00111111, B11111000, B00000111, B11111111, B11111111, 
+  B11111111, B11111110, B00000000, B00000111, B11000000, B00000000, B11111111, B11111111, 
+  B11111111, B11111000, B00000000, B00000000, B00000000, B00000000, B00111111, B11111111, 
+  B11111111, B11100000, B00000000, B00000000, B00000000, B00000000, B00011111, B11111111, 
+  B11111111, B11000000, B00011111, B10000000, B00000000, B00000000, B00001111, B11111111, 
+  B11111111, B11000000, B00111111, B11100000, B00000000, B00000000, B00000111, B11111111, 
+  B11111111, B10000000, B01111111, B11100000, B00000000, B00000000, B00000011, B11111111, 
+  B11111111, B10000000, B01111111, B11100000, B00000000, B00000000, B00000011, B11111111, 
+  B11111111, B10000000, B01111111, B11100000, B00000000, B00000000, B00000011, B11111111, 
+  B11111111, B10000000, B01111111, B11100000, B00000000, B00000000, B00000011, B11111111, 
+  B11111111, B10000000, B00011111, B10000000, B00000000, B00000000, B00000011, B11111111, 
+  B11111111, B10000000, B00000000, B00000000, B00000000, B00000000, B00000111, B11111111, 
+  B11111111, B11000000, B00000000, B00000000, B00000000, B00000000, B00000111, B11111111, 
+  B11111111, B11000000, B00000000, B00000000, B00000000, B00000000, B00000111, B11111111, 
+  B11111111, B11100000, B00000000, B00000000, B00000000, B00000000, B00001111, B11111111, 
+  B11111111, B11110000, B00000000, B00000000, B00000000, B00000000, B00011111, B11111111, 
+  B11111111, B11111000, B00000000, B00000000, B00000000, B00000000, B00111111, B11111111, 
+  B11111111, B11111100, B00000000, B00000000, B00000000, B00000000, B01111111, B11111111, 
+  B11111111, B11111110, B00000000, B00000000, B00000000, B00000000, B11111111, B11111111, 
+  B11111111, B11111111, B10000000, B00000000, B00000000, B00000011, B11111111, B11111111, 
+  B11111111, B11111111, B11000000, B00000000, B00000000, B00000111, B11111111, B11111111, 
+  B11111111, B11111111, B11110000, B00000000, B00000000, B00011111, B11111111, B11111111, 
+  B11111111, B11111111, B11111100, B00000000, B00000000, B01111111, B11111111, B11111111, 
+  B11111111, B11111111, B11111110, B00000000, B00000000, B11111111, B11111111, B11111111, 
+  B11111111, B11111111, B11111111, B11000000, B00000111, B11111111, B11111111, B11111111, 
+  B11111111, B11111111, B11111111, B11110000, B00011111, B11111111, B11111111, B11111111, 
+  B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, B11111111, 
+  B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, 
+  B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, 
+  
+  };
+
+// constants won't change. They're used here to
+// set pin numbers:
+const int buttonPin = 2;     // the number of the pushbutton pin
+const int ledPin = 7;      // the number of the LED pin
+const int buzzer = 6;
+const int ledCount = 10; // the number of LEDs in the bar graph
+int ledPins[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 12};
+ int pushButton=2;
+ const int toneTable[7][5]={
+{ 66, 131, 262, 523, 1046}, // C Do
+{ 74, 147, 294, 587, 1175}, // D Re
+{ 83, 165, 330, 659, 1318}, // E Mi
+{ 88, 175, 349, 698, 1397}, // F Fa
+{ 98, 196, 392, 784, 1568}, // G So
+{110, 220, 440, 880, 1760}, // A La
+{124, 247, 494, 988, 1976} // B Si
+};
+char toneName[]="CDEFGAB";
+char beeTone[]="AFAFAFAFCCC";
+int beeBeat[]={
+1,1,1,1,1,1,1,1,1,1,1
+};
+int getTone(char symbol) {
+int toneNo = 0;
+for ( int ii=0; ii<7; ii++ ) {
+if ( toneName[ii]==symbol ) {
+toneNo = ii;
+break;
+}
+}
+return toneNo;
+}
+
+// variables will change:
+int buttonState = 0;         // variable for reading the pushbutton status
+
+void setup() {
+   Serial.begin(9600);
+  // put your setup code here, to run once:
+  pinMode(pushButton,INPUT);
+display.begin(SSD1306_SWITCHCAPVCC);
+  // initialize the LED pin as an output:
+  pinMode(ledPin, OUTPUT);
+  // initialize the pushbutton pin as an input:
+  pinMode(buttonPin, INPUT);
+  pinMode(buzzer,OUTPUT);
+noTone(buzzer);
+}
+void loop() {
+
+int fsr_value = analogRead(fsr_pin); // 讀取FSR
+int led_value = map(fsr_value, 0, 1023, 0, 10);
+if(led_value<=3){
+  display.clearDisplay();
+ display.setTextColor(WHITE);
+ display.setTextSize(3);
+ display.setCursor(15,10);
+ display.print("NO.X");
+ display.display(); 
+  
+  }
+  else if(led_value>3&&led_value<7)
+  {display.clearDisplay();
+ display.setTextColor(WHITE);
+ display.setTextSize(2);
+ display.setCursor(20,10);
+display.drawBitmap(25,7,Logo,32,16,WHITE);
+ display.display(); 
+    
+    }
+  else{
+    display.clearDisplay();
+ display.setTextColor(WHITE);
+ display.setTextSize(2);
+ display.setCursor(70,10);
+display.drawBitmap(20,5,Sign,64,32,WHITE);
+ display.display(); 
+    }
+// read the state of the pushbutton value:
+  buttonState = digitalRead(buttonPin);
+
+  // check if the pushbutton is pressed.
+  // if it is, the buttonState is HIGH:
+  if (buttonState == HIGH) {
+    // turn LED on:
+    digitalWrite(ledPin, HIGH);
+    display.clearDisplay();
+ display.setTextColor(WHITE);
+ display.setTextSize(2);
+ display.setCursor(20,10);
+ display.print("BON GUN");
+ display.display(); 
+ 
+int ii, length, toneNo;
+int duration;
+// bee
+length = sizeof(beeTone)-1;
+for ( ii=0; ii<length; ii++ ) {
+toneNo = getTone(beeTone[ii]);
+duration = beeBeat[ii]*333;
+tone(buzzer,toneTable[toneNo][3]);
+delay(duration);
+noTone(buzzer);
+}
+delay(2000);
+  } 
+  else{
+  digitalWrite(ledPin, LOW);
+  
+  }
+}
+
